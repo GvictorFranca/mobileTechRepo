@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(MyApp());
@@ -10,10 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Select A Location',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'MobileTech',
+      theme: ThemeData(),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (context) => SelectALocation(),
@@ -29,26 +30,101 @@ class SelectALocation extends StatefulWidget {
 }
 
 class _SelectALocationState extends State<SelectALocation> {
-  String actualLocation = '';
-  final inputController = TextEditingController();
+  String locationText = '';
+  final totalValueController = MoneyMaskedTextController(
+      decimalSeparator: ',', thousandSeparator: '.', leftSymbol: 'R\$');
 
-  Widget selectLocationWidget() {
+  final entraceValueController = MoneyMaskedTextController(
+      decimalSeparator: ',', thousandSeparator: '.', leftSymbol: 'R\$');
+
+  Widget totalValueControllerWidget() {
     return Column(
       children: <Widget>[
         Container(
           width: 300,
           decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black,
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 6.0),
+            ],
             color: Colors.red[800],
           ),
           child: TextField(
-            controller: inputController,
+            controller: totalValueController,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
+            style: GoogleFonts.montserrat(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0.5, 0.5),
+                    blurRadius: 6.0),
+              ],
+            ),
             decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Digite aqui',
-                hintStyle: TextStyle(color: Colors.grey[200])),
+              border: InputBorder.none,
+              hintStyle: GoogleFonts.montserrat(
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0.5, 0.5),
+                      blurRadius: 6.0),
+                ],
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget entraceValueControllerWidget() {
+    return Column(
+      children: <Widget>[
+        Container(
+          width: 300,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black,
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 6.0),
+            ],
+            color: Colors.red[800],
+          ),
+          child: TextField(
+            controller: entraceValueController,
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0.5, 0.5),
+                    blurRadius: 6.0),
+              ],
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintStyle: GoogleFonts.montserrat(
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(0.5, 0.5),
+                      blurRadius: 6.0),
+                ],
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
       ],
@@ -59,81 +135,169 @@ class _SelectALocationState extends State<SelectALocation> {
   Widget build(BuildContext context) {
     final path = 'assets/images/logo1.svg';
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 180),
-              Container(
-                height: 70,
-                child: SvgPicture.asset(path),
-              ),
-              Center(
-                child: Text(
-                  '@sigamobiletech',
-                  style: GoogleFonts.sourceSansPro(
-                    decoration: TextDecoration.none,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+    return Stack(
+      children: [
+        Scaffold(
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 180),
+                  Container(
+                    height: 70,
+                    child: SvgPicture.asset(path),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Digite abaixo o valor da entrada',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.sourceSansPro(
-                  decoration: TextDecoration.none,
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              selectLocationWidget(),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 40,
-                width: 150,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: Colors.red[800],
-                  child: Text(
-                    'Simular',
-                    style: TextStyle(color: Colors.white),
+                  Center(
+                    child: Text(
+                      '@sigamobiletech',
+                      style: GoogleFonts.raleway(
+                        decoration: TextDecoration.none,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NextPage(
-                            locationText: inputController.text,
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 180.0),
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.grey[850], boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey[850],
+                            offset: Offset(0.0, 1.0),
+                            blurRadius: 6.0),
+                      ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'valor da compra'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.raleway(
+                            decoration: TextDecoration.none,
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ));
-                  },
-                ),
-              )
-            ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  totalValueControllerWidget(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 160.0),
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.grey[850], boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey[850],
+                            offset: Offset(0.0, 1.0),
+                            blurRadius: 6.0),
+                      ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'entrada em dinheiro'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.raleway(
+                            decoration: TextDecoration.none,
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  entraceValueControllerWidget(),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                    height: 40,
+                    width: 150,
+                    child: RaisedButton(
+                      elevation: 10,
+                      color: Colors.red[800],
+                      child: Text(
+                        'Simular'.toUpperCase(),
+                        style: GoogleFonts.montserrat(shadows: [
+                          Shadow(
+                            offset: Offset(1.5, 1.5),
+                            blurRadius: 1.0,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ], color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        if (totalValueController.text == 'R\$0,00') {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoAlertDialog(
+                                    title: Text(
+                                      "Voce precisa inserir pelo menos o valor total da compra",
+                                      style: GoogleFonts.montserrat(),
+                                    ),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text(
+                                          "Ok",
+                                          style: GoogleFonts.montserrat(),
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      ),
+                                    ],
+                                  ));
+                        } else {
+                          final entraceInput = entraceValueController.text
+                              .replaceAll('R\$', '')
+                              .replaceAll('.', '')
+                              .replaceAll(',', '.');
+
+                          final totalValueInput = totalValueController.text
+                              .replaceAll('R\$', '')
+                              .replaceAll('.', '')
+                              .replaceAll(',', '.');
+
+                          final entrace = double.parse(entraceInput);
+                          final total = double.parse(totalValueInput);
+
+                          final result = (total - entrace).toString();
+
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => NextPage(
+                                result: result,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
 
 class NextPage extends StatefulWidget {
-  final String locationText;
-  NextPage({this.locationText});
+  final String result;
+  NextPage({this.result});
 
   @override
   _NextPageState createState() => _NextPageState();
@@ -156,8 +320,8 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
-    final path = 'assets/images/logo.svg';
-    final inputNumber = double.parse(widget.locationText);
+    final path = 'assets/images/logo1.svg';
+    final inputNumber = double.parse(widget.result);
 
     double debitoAvista = inputNumber + inputNumber * 0.0150;
     double creditoAvista = inputNumber + inputNumber * 0.0350;
@@ -189,106 +353,173 @@ class _NextPageState extends State<NextPage> {
     return Center(
       child: Stack(
         children: [
-          Image.asset(
-            'images/template.png',
-            fit: BoxFit.cover,
-          ),
           Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.red[800],
-              title: Text(
-                'Parcelamento',
-                style: GoogleFonts.sourceSansPro(
-                  decoration: TextDecoration.none,
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: Icon(
+                      CupertinoIcons.arrow_left,
+                      size: 40,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, '/');
+                    },
+                  );
+                },
               ),
-              centerTitle: true,
+              title: Text(
+                'Voltar',
+                style:
+                    GoogleFonts.montserrat(color: Colors.black, fontSize: 25),
+              ),
             ),
             body: ListView(
               children: [
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.red[800],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+                  padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                          ),
+                          child: Column(
                             children: [
-                              Text(
-                                'Debito a vista',
-                                style: GoogleFonts.sourceSansPro(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                child: Center(
+                                  child: Text(
+                                    'Débito',
+                                    style: GoogleFonts.montserrat(
+                                      decoration: TextDecoration.none,
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                'R\$ ${(debitoAvista.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                              SizedBox(width: 4),
+                              Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, right: 20),
+                                  child: Center(
+                                    child: Text(
+                                      'R\$ ${(debitoAvista.toStringAsFixed(2)).toString()}',
+                                      style: GoogleFonts.montserrat(
+                                        shadows: [
+                                          Shadow(
+                                            offset: Offset(1.5, 1.5),
+                                            blurRadius: 1.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                        ],
+                                        decoration: TextDecoration.none,
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
+                              SizedBox(height: 8),
                             ],
                           ),
-                          SizedBox(
-                            width: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
                           ),
-                          Column(
+                          child: Column(
                             children: [
-                              Text(
-                                'Credito a vista',
-                                style: GoogleFonts.sourceSansPro(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    'Crédito à vista',
+                                    style: GoogleFonts.montserrat(
+                                      decoration: TextDecoration.none,
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                'R\$ ${(creditoAvista.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                              Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, right: 20),
+                                  child: Center(
+                                    child: Text(
+                                      'R\$ ${(creditoAvista.toStringAsFixed(2)).toString()}',
+                                      style: GoogleFonts.montserrat(
+                                        decoration: TextDecoration.none,
+                                        shadows: [
+                                          Shadow(
+                                            offset: Offset(1.5, 1.5),
+                                            blurRadius: 1.0,
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                          ),
+                                        ],
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
+                              SizedBox(height: 8),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 10.0, right: 10, top: 20, bottom: 10),
+                      left: 10, right: 10, top: 5, bottom: 10),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.red[800],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          offset: Offset(0.5, 0.5),
+                          blurRadius: 3.0,
+                        ),
+                      ],
+                      color: Colors.red,
                     ),
                     child: Table(
-                      defaultColumnWidth: FixedColumnWidth(150.0),
+                      defaultColumnWidth: FixedColumnWidth(100),
                       border: TableBorder(
                         horizontalInside: BorderSide(
                           color: Colors.white,
                           style: BorderStyle.solid,
-                          width: 0.5,
+                          width: 0,
                         ),
                         verticalInside: BorderSide(
                           color: Colors.white,
@@ -300,42 +531,68 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              decoration: BoxDecoration(),
                               height: 70,
                               alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      offset: Offset(0.5, 0.5),
+                                      blurRadius: 7.0,
+                                    )
+                                  ]),
                               child: Text(
                                 'Parcelas',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             Container(
                               height: 70,
                               alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      offset: Offset(0.5, 0.5),
+                                      blurRadius: 7.0,
+                                    )
+                                  ]),
                               child: Text(
-                                'Valor da Parcela',
-                                style: GoogleFonts.sourceSansPro(
+                                'Valor da\n Parcela',
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             Container(
                               height: 70,
                               alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      offset: Offset(0.5, 0.5),
+                                      blurRadius: 7.0,
+                                    )
+                                  ]),
                               child: Text(
                                 'Valor Total',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -346,39 +603,61 @@ class _NextPageState extends State<NextPage> {
                             Container(
                               height: 35,
                               alignment: Alignment.center,
+                              color: Colors.red,
                               child: Text(
                                 shares[0],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela1.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share1.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -387,41 +666,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[1],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela2.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share2.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -430,41 +730,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[2],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela3.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share3.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -473,41 +794,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[3],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela4.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share4.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -516,41 +858,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[4],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela5.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share5.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -559,41 +922,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[5],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela6.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share6.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -602,41 +986,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[6],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela7.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share7.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -645,41 +1050,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[7],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela8.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share8.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -688,41 +1114,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[8],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela9.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share9.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -731,41 +1178,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[9],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela10.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share10.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -774,41 +1242,62 @@ class _NextPageState extends State<NextPage> {
                         TableRow(
                           children: [
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 shares[10],
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(parcela11.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                             Container(
-                              height: 35,
+                              height: 40,
                               alignment: Alignment.center,
                               child: Text(
                                 'R\$ ${(share11.toStringAsFixed(2)).toString()}',
-                                style: GoogleFonts.sourceSansPro(
+                                style: GoogleFonts.montserrat(
                                   decoration: TextDecoration.none,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.5, 1.5),
+                                      blurRadius: 1.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -819,26 +1308,28 @@ class _NextPageState extends State<NextPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.only(top: 20.0),
                   child: Container(
-                    height: 70,
+                    height: 35,
                     child: SvgPicture.asset(
                       path,
-                      color: Colors.red[800],
                     ),
                   ),
                 ),
                 Center(
                   child: Text(
                     '@sigamobiletech',
-                    style: GoogleFonts.sourceSansPro(
+                    style: GoogleFonts.montserrat(
                       decoration: TextDecoration.none,
-                      fontSize: 20,
+                      fontSize: 10,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                )
               ],
             ),
           ),
